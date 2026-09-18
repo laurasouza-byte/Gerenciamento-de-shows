@@ -1,49 +1,66 @@
 <?php
 
-require_once __DIR__ . '/../Model/ShowModel.php';
+namespace Controller;
+
+use Model\Show;
 
 class ShowController
 {
-    private ShowModel $showModel;
+    private Show $showModel;
 
     public function __construct()
     {
-        $this->showModel = new ShowModel();
+        $this->showModel = new Show();
     }
 
-    public function validate(string $name, string $venue, string $date, int $capacity, float $price): ?string
+    public function validate(string $nome, string $local, string $dataShow, int $capacidade, float $precoIngresso): ?string
     {
-        if (empty($name) || empty($venue) || empty($date)) {
-            return "Preencha nome, local e data do show.";
+        if ($nome === '' || $local === '' || $dataShow === '') {
+            return 'Preencha nome, local e data do show.';
         }
 
-        if ($capacity <= 0) {
-            return "A capacidade deve ser maior que zero.";
+        if ($capacidade <= 0) {
+            return 'A capacidade deve ser maior que zero.';
         }
 
-        if ($price < 0) {
-            return "O valor do ingresso não pode ser negativo.";
+        if ($precoIngresso < 0) {
+            return 'O valor do ingresso não pode ser negativo.';
         }
 
-        if (strtotime($date) < time()) {
-            return "A data do show não pode estar no passado.";
+        $timestamp = strtotime($dataShow);
+        if ($timestamp === false) {
+            return 'Data do show inválida.';
+        }
+
+        if ($timestamp < time()) {
+            return 'A data do show não pode estar no passado.';
         }
 
         return null;
     }
 
-    public function create(string $name, string $artista, string $venue, string $date, int $capacity, float $price, int $userId): bool
-    {
-        return $this->showModel->create($name, $artista, $venue, $date, $capacity, $price, $userId);
+    public function create(string $nome, string $artista, string $local, string $dataShow, int $capacidade, float $precoIngresso, int $idUsuario): array|false 
+        {
+        return $this->showModel->create( $nome,  $artista, $local,  $dataShow,  $capacidade, $precoIngresso, $idUsuario);
     }
 
-    public function listAll(): array
+    public function listAll(int $idUsuario): array|false
     {
-        return $this->showModel->getAll();
+        return $this->showModel->getAll($idUsuario);
     }
 
-    public function delete(int $id): bool
+    public function find(int $id, int $idUsuario): array|false
     {
-        return $this->showModel->delete($id);
+        return $this->showModel->getById($id, $idUsuario);
+    }
+
+    public function update(int $id, string $nome, string $artista, string $local, string $dataShow, int $capacidade, float $precoIngresso, int $idUsuario): array|false 
+    {
+        return $this->showModel->update($id, $nome, $artista, $local, $dataShow, $capacidade, $precoIngresso, $idUsuario);
+    }
+
+    public function delete(int $id, int $idUsuario): bool
+    {
+        return $this->showModel->delete($id, $idUsuario);
     }
 }

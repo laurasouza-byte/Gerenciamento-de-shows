@@ -1,18 +1,20 @@
 <?php
 
 session_start();
-require_once __DIR__ . '/../Controller/UserController.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Controller\UserController;
 
 $userController = new UserController();
 $errorMessage = '';
 $successMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'];
+    $nome = trim((string) ($_POST['nome'] ?? ''));
+    $email = trim((string) ($_POST['email'] ?? ''));
+    $senha = (string) ($_POST['senha'] ?? '');
 
-    $errorMessage = $userController->register($name, $email, $password);
+    $errorMessage = $userController->register($nome, $email, $senha);
 
     if (!$errorMessage) {
         $successMessage = 'Cadastro realizado com sucesso! Você já pode entrar.';
@@ -28,28 +30,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Shows | Cadastro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="templates/css/style.css">
+    <link rel="stylesheet" href="../templates/css/style.css">
 </head>
 
 <body>
     <main class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-sm p-4" style="width: 100%; max-width: 380px;">
+        <div class="card shadow-sm p-4" class="auth-card">
             <h3 class="text-center mb-3">Criar Conta</h3>
 
             <?php if ($errorMessage): ?>
-                <div class="alert alert-danger py-2"><?= htmlspecialchars($errorMessage) ?></div>
+                <div class="alert alert-danger py-2"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></div>
 
             <?php endif; ?>
 
             <?php if ($successMessage): ?>
-                <div class="alert alert-success py-2"><?= htmlspecialchars($successMessage) ?></div>
+                <div class="alert alert-success py-2"><?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?></div>
 
             <?php endif; ?>
 
             <form method="POST">
                 <div class="mb-3">
                     <label class="form-label">Nome</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <input type="text" name="nome" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">E-mail</label>
@@ -57,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Senha</label>
-                    <input type="password" name="password" class="form-control" required minlength="6">
+                    <input type="password" name="senha" class="form-control" required minlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
             </form>

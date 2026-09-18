@@ -63,3 +63,16 @@ a:hover {
   border-color: var(--color-primary);
   border-radius: 8px; 
 }
+
+.auth-container {
+  min-height: 100vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+button {
+  cursor: pointer;
+}
