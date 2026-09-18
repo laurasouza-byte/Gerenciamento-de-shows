@@ -1,11 +1,9 @@
 <?php
+
 require_once __DIR__ . '/../Config/configuration.php';
 
-/**
- * Representa a tabela "shows" no banco de dados.
- * CRUD básico: criar, listar e excluir um show.
- */
-class Show
+
+class ShowModel
 {
     private PDO $db;
 
@@ -16,8 +14,7 @@ class Show
 
     public function create(string $name, string $artista, string $venue, string $date, int $capacity, float $price, int $userId): bool
     {
-        $sql = "INSERT INTO shows (name, artista, venue, show_date, capacity, ticket_price, created_at, id_user)
-                VALUES (:name, :artista, :venue, :show_date, :capacity, :ticket_price, NOW(), :id_user)";
+        $sql = "INSERT INTO shows (name, artista, venue, show_date, capacity, ticket_price, created_at, id_user) VALUES (:name, :artista, :venue, :show_date, :capacity, :ticket_price, NOW(), :id_user)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':name', $name);

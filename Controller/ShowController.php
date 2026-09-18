@@ -1,9 +1,7 @@
 <?php
+
 require_once __DIR__ . '/../Model/ShowModel.php';
 
-/**
- * Regras de negócio relacionadas aos shows: validação e CRUD.
- */
 class ShowController
 {
     private ShowModel $showModel;
@@ -13,10 +11,6 @@ class ShowController
         $this->showModel = new ShowModel();
     }
 
-    /**
-     * Valida os dados de um show antes de salvar.
-     * @return string|null Mensagem de erro, ou null se os dados são válidos.
-     */
     public function validate(string $name, string $venue, string $date, int $capacity, float $price): ?string
     {
         if (empty($name) || empty($venue) || empty($date)) {

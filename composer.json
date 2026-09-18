@@ -1,0 +1,19 @@
+{
+    "name": "laura/gerenciamento-de-shows",
+    "description": "Sistema de cadastro e gerenciamento de shows.",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Laura\\GerenciamentoDeShows\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "laurasouza-byte",
+            "email": "laura.souza@ba.estudante.senai.br"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

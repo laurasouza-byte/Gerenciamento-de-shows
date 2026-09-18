@@ -1,9 +1,7 @@
 <?php
+
 require_once __DIR__ . '/../Model/UserModel.php';
 
-/**
- * Regras de negócio relacionadas ao usuário: cadastro, login e sessão.
- */
 class UserController
 {
     private UserModel $userModel;
@@ -13,10 +11,6 @@ class UserController
         $this->userModel = new UserModel();
     }
 
-    /**
-     * Cadastra um novo usuário.
-     * @return string|null Mensagem de erro, ou null se deu tudo certo.
-     */
     public function register(string $name, string $email, string $password): ?string
     {
         if (empty($name) || empty($email) || empty($password)) {

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once __DIR__ . '/../Controller/UserController.php';
 require_once __DIR__ . '/../Controller/ShowController.php';
@@ -6,7 +7,6 @@ require_once __DIR__ . '/../Controller/ShowController.php';
 $userController = new UserController();
 $showController = new ShowController();
 
-// Protege a página: só usuário logado pode ver o painel
 if (!$userController->isLoggedIn()) {
     header('Location: ../index.php');
     exit();
@@ -15,7 +15,6 @@ if (!$userController->isLoggedIn()) {
 $errorMessage = '';
 $successMessage = '';
 
-// Cadastro de um novo show
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_show'])) {
     $name = trim($_POST['name']);
     $artist = trim($_POST['artist']);
@@ -32,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_show'])) {
     }
 }
 
-// Exclusão de um show (via link ?delete=ID)
 if (isset($_GET['delete'])) {
     $showController->delete((int) $_GET['delete']);
     header('Location: home.php');
@@ -40,7 +38,9 @@ if (isset($_GET['delete'])) {
 }
 
 $shows = $showController->listAll();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -49,12 +49,12 @@ $shows = $showController->listAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Shows | Painel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="templates/css/style.css">
 </head>
 
 <body>
     <nav class="navbar navbar-dark bg-dark px-3 mb-4">
-        <span class="navbar-brand">🎤 Gerenciador de Shows</span>
+        <span class="navbar-brand">Gerenciador de Shows</span>
         <span class="text-white">
             Olá, <?= htmlspecialchars($_SESSION['user_name']) ?> —
             <a href="logout.php" class="text-white">Sair</a>
@@ -71,7 +71,7 @@ $shows = $showController->listAll();
         <?php endif; ?>
 
         <div class="row">
-            <!-- Formulário de cadastro -->
+  
             <div class="col-md-4">
                 <div class="card shadow-sm p-3 mb-4">
                     <h5>Cadastrar novo show</h5>
@@ -108,8 +108,8 @@ $shows = $showController->listAll();
                 </div>
             </div>
 
-            <!-- Lista de shows cadastrados -->
             <div class="col-md-8">
+
                 <h5>Shows cadastrados</h5>
 
                 <?php if (empty($shows)): ?>
@@ -122,7 +122,7 @@ $shows = $showController->listAll();
                             <div>
                                 <h6 class="mb-1"><?= htmlspecialchars($show['name']) ?></h6>
                                 <p class="mb-1 text-muted">
-                                    <?= htmlspecialchars($show['artist'] ?: 'Artista não informado') ?>
+                                    <?= htmlspecialchars($show['artista'] ?: 'Artista não informado') ?>
                                     — <?= htmlspecialchars($show['venue']) ?>
                                 </p>
                                 <p class="mb-0 small">
@@ -135,7 +135,9 @@ $shows = $showController->listAll();
                                 onclick="return confirm('Excluir este show?')">Excluir</a>
                         </div>
                     </div>
+
                 <?php endforeach; ?>
+
             </div>
         </div>
     </div>
