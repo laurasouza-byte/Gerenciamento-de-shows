@@ -1,0 +1,55 @@
+<?php
+require_once __DIR__ . '/../Model/ShowModel.php';
+
+/**
+ * Regras de negócio relacionadas aos shows: validação e CRUD.
+ */
+class ShowController
+{
+    private ShowModel $showModel;
+
+    public function __construct()
+    {
+        $this->showModel = new ShowModel();
+    }
+
+    /**
+     * Valida os dados de um show antes de salvar.
+     * @return string|null Mensagem de erro, ou null se os dados são válidos.
+     */
+    public function validate(string $name, string $venue, string $date, int $capacity, float $price): ?string
+    {
+        if (empty($name) || empty($venue) || empty($date)) {
+            return "Preencha nome, local e data do show.";
+        }
+
+        if ($capacity <= 0) {
+            return "A capacidade deve ser maior que zero.";
+        }
+
+        if ($price < 0) {
+            return "O valor do ingresso não pode ser negativo.";
+        }
+
+        if (strtotime($date) < time()) {
+            return "A data do show não pode estar no passado.";
+        }
+
+        return null;
+    }
+
+    public function create(string $name, string $artista, string $venue, string $date, int $capacity, float $price, int $userId): bool
+    {
+        return $this->showModel->create($name, $artista, $venue, $date, $capacity, $price, $userId);
+    }
+
+    public function listAll(): array
+    {
+        return $this->showModel->getAll();
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->showModel->delete($id);
+    }
+}
